@@ -1,0 +1,73 @@
+/*
+ * Hardware Block Schematic - Audio Signal Filtering
+ * =================================================
+ *
+ *  +------------------+     +------------------+     +------------------+
+ *  |                  |     |                  |     |                  |
+ *  |   Microphone /   |     |   Preamplifier   |     |   Arduino Uno    |
+ *  |   Audio Source   +---->+   + DC Bias       +---->+   (Pin A0)       |
+ *  |                  |     |   (0V to 5V)      |     |                  |
+ *  +------------------+     +------------------+     |   IIR Butter-    |
+ *                                                     |   worth LPF      |
+ *                                                     |   fc = 5000 Hz   |
+ *                                                     |   Order = 6      |
+ *                                                     |                  |
+ *                                                     |   PWM Output     |
+ *                                                     |   (Pin 9)        |
+ *                                                     +--------+---------+
+ *                                                              |
+ *                                                              v
+ *                           +------------------+     +------------------+
+ *                           |                  |     |                  |
+ *                           |   Audio          |     |   RC Low-Pass    |
+ *                           |   Amplifier      +<----+   Filter         |
+ *                           |   (LM386)        |     |   (Smoothing)    |
+ *                           +--------+---------+     +------------------+
+ *                                    |
+ *                                    v
+ *                           +------------------+
+ *                           |                  |
+ *                           |   Speaker /      |
+ *                           |   Headphone      |
+ *                           |                  |
+ *                           +------------------+
+ *
+ * Components Required:
+ * ====================
+ * 1. Arduino Uno (ATmega328P, 16 MHz)
+ * 2. Electret Microphone Module (with built-in preamp) OR 3.5mm audio input
+ * 3. Resistor 10kΩ (for DC bias voltage divider)
+ * 4. Resistor 10kΩ (for DC bias voltage divider)
+ * 5. Capacitor 10µF (coupling capacitor - input)
+ * 6. Capacitor 10µF (coupling capacitor - output)
+ * 7. Resistor 1kΩ + Capacitor 100nF (RC filter for PWM smoothing)
+ * 8. LM386 Audio Amplifier IC (for speaker output)
+ * 9. Speaker (8Ω) or 3.5mm headphone jack
+ * 10. Breadboard and jumper wires
+ * 11. 5V USB power supply
+ *
+ * Pin Connections:
+ * ================
+ * Arduino A0  <-- Audio Input (via coupling cap + DC bias)
+ * Arduino D9  --> PWM Output (via RC filter to amplifier)
+ * Arduino GND --- Common Ground
+ * Arduino 5V  --- Power for bias circuit
+ *
+ * DC Bias Circuit (Input):
+ * ========================
+ *                    10kΩ
+ *   5V ----/\/\/\----+---- A0
+ *                    |
+ *               10kΩ |  10µF
+ *   GND---/\/\/\----+--||-- Audio In
+ *
+ *   This creates a 2.5V DC offset so the audio signal
+ *   swings between 0V and 5V (within ADC range).
+ *
+ * PWM Smoothing (Output):
+ * =======================
+ *           1kΩ       100nF
+ *   D9 ---/\/\/\---+---||--- GND
+ *                  |
+ *                  +--- To LM386 Input (via 10µF coupling cap)
+ */

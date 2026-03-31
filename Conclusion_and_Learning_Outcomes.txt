@@ -1,0 +1,72 @@
+Course Project 1 - Audio Signal Filtering
+==========================================
+
+CONCLUSION
+----------
+In this project, a noisy audio signal (SYB05, Fs = 44100 Hz, duration = 3.52 s) was successfully
+filtered using both FIR and IIR digital filter designs in MATLAB.
+
+Frequency analysis (FFT) of the noisy signal revealed that the noise was concentrated in the
+high-frequency range (6 kHz - 22 kHz), while the useful audio content was present below 5 kHz.
+Based on this analysis, a low-pass filter with a cutoff frequency of 5000 Hz was designed.
+
+Two filter types were implemented:
+1. FIR Filter: Kaiser window method, Order 100 - Provides linear phase response and guaranteed
+   stability but requires a higher order for sharp cutoff.
+2. IIR Filter: Butterworth design, Order 6 - Achieves sharp cutoff with fewer coefficients,
+   maximally flat passband response, suitable for real-time hardware implementation.
+
+Both filters effectively removed the high-frequency noise components while preserving the
+original audio content. The IIR Butterworth filter was selected for hardware implementation
+on an Arduino microcontroller due to its computational efficiency (fewer coefficients, lower
+memory requirements).
+
+The hardware implementation used cascaded Second-Order Sections (SOS) in Direct Form II
+Transposed structure for numerical stability, with Timer1 interrupt-driven sampling at 44100 Hz.
+
+
+LEARNING OUTCOMES
+-----------------
+Through the implementation of this course project, the following key concepts were learned:
+
+1. Signal Analysis in Frequency Domain:
+   - Learned to compute and interpret the FFT (Fast Fourier Transform) to identify noise
+     characteristics in an audio signal.
+   - Understood how to compare frequency spectra of noisy and original signals to determine
+     the nature and frequency range of noise.
+
+2. Digital Filter Design:
+   - Learned the design methodology for both FIR (Finite Impulse Response) and IIR (Infinite
+     Impulse Response) digital filters using MATLAB.
+   - Understood the trade-offs between FIR and IIR filters:
+     * FIR: Linear phase, always stable, but requires higher order
+     * IIR: Lower order, computationally efficient, but may have phase distortion
+
+3. FIR Filter Design using Window Method:
+   - Learned to design FIR filters using the Kaiser window technique.
+   - Understood the effect of filter order and window parameters on the frequency response.
+
+4. IIR Filter Design using Butterworth Method:
+   - Learned the Butterworth filter design which provides maximally flat magnitude response
+     in the passband.
+   - Understood how to select appropriate filter order and cutoff frequency.
+
+5. Filter Implementation and Application:
+   - Gained practical experience in applying designed filters to real audio signals.
+   - Learned to normalize and save filtered audio for playback and evaluation.
+
+6. Hardware Implementation on Microcontroller:
+   - Learned real-time digital signal processing on Arduino using Timer interrupts.
+   - Understood the concept of Second-Order Sections (SOS) for numerically stable IIR filter
+     implementation.
+   - Gained experience with ADC input, PWM output, and analog signal conditioning circuits.
+
+7. MATLAB for DSP:
+   - Gained proficiency in using MATLAB Signal Processing Toolbox functions:
+     fir1(), butter(), freqz(), fft(), audioread(), audiowrite(), filter().
+   - Learned to generate publication-quality plots with proper labeling for technical reports.
+
+8. Practical Understanding of Sampling and Aliasing:
+   - Understood the significance of sampling frequency (Fs = 44100 Hz) and Nyquist frequency
+     (22050 Hz) in audio signal processing.
+   - Learned the importance of anti-aliasing and reconstruction filters in practical systems.
